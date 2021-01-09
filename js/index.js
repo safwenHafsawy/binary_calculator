@@ -1,5 +1,8 @@
 //Variables
 let res = document.getElementById("res");
+let oct = document.getElementById("oct");
+let dec = document.getElementById("dec");
+let hex = document.getElementById("hex");
 let btns = document.getElementById("btns");
 let btn0 = document.getElementById("btn0");
 let btn1 = document.getElementById("btn1");
@@ -13,13 +16,16 @@ let operand1 = "",
   operand2 = "",
   operator = "";
 
-//clearing the res
+//clearing the display
 btnClr.addEventListener("click", () => {
   res.innerText = "";
   operand1 = "";
   operand2 = "";
   operator = "";
+  btn0.disabled = false;
+  btn1.disabled = false;
 });
+
 //adding the operator
 btnSum.onclick = () => {
   operator += "+";
@@ -37,26 +43,28 @@ btnDiv.onclick = () => {
   operator += "/";
   res.innerText += operator;
 };
+
 //adding the operands
 btn0.addEventListener("click", () => {
   if (!operator) {
-    operand1 = "0";
-    res.innerText += operand1;
+    operand1 += "0";
+    res.innerText += "0";
   } else {
-    operand2 = "0";
-    res.innerText += operand2;
+    operand2 += "0";
+    res.innerText += "0";
   }
 });
 
 btn1.addEventListener("click", () => {
   if (!operator) {
-    operand1 = "1";
-    res.innerText += operand1;
+    operand1 += "1";
+    res.innerText += "1";
   } else {
-    operand2 = "1";
-    res.innerText += operand2;
+    operand2 += "1";
+    res.innerText += "1";
   }
 });
+
 //making the calculations
 btnEql.onclick = () => {
   let result;
@@ -73,8 +81,36 @@ btnEql.onclick = () => {
       result = firstInt * secondInt;
       break;
     case "/":
-      resultI = firstInt / secondInt;
+      result = firstInt / secondInt;
+      result = Math.floor(result);
       break;
   }
-  res.innerText = result;
+  try {
+    res.innerText = result.toString(2);
+    operand1 = res.innerText;
+    operand2 = "";
+    operator = "";
+  } catch {
+    res.innerText = "Error";
+  }
+};
+
+//converting
+hex.onclick = () => {
+  let hex = parseInt(operand1, 2).toString(16).toUpperCase();
+  btn0.disabled = true;
+  btn1.disabled = true;
+  res.innerText = hex.toString(16);
+};
+oct.onclick = () => {
+  let oct = parseInt(operand1).toString(8);
+  btn0.disabled = true;
+  btn1.disabled = true;
+  res.innerText = oct;
+};
+dec.onclick = () => {
+  let dec = parseInt(operand1, 2).toString(10);
+  btn0.disabled = true;
+  btn1.disabled = true;
+  res.innerText = dec;
 };
